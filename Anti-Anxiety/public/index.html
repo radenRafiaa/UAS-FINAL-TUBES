@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    
+    <div class="absolute pl-5 pt-5">
+        <img src="/assets/Images/logoHeader.png" alt="" class="h-2/3 w-2/3 ">
+    </div>
+    <div class="flex w-screen">
+        <div class="bg-[#01365A] h-screen w-2/5">
+            <div class="p-20">
+                <h1 class="text-white text-7xl font-bold">Selamat Datang</h1>
+
+                <div class="mt-20">
+                    <input id="username" type="text" class="w-3/4 rounded-full p-2 pl-5 pr-5" placeholder="Username">
+                </div>
+                <div class="mt-10">
+                    <input id="password" type="password" class="w-3/4 rounded-full p-2 pl-5 pr-5" placeholder="Password">
+                </div>
+
+                <div class="flex mt-10">
+                    <button id="btn_login" class="bg-white h-9 w-36 rounded-lg text-[#01365A] mr-6 ml-5 hover:bg-[#01365A] hover:text-white hover:border">Login</button>
+                    <button id="btn_register" class="bg-[#01365A] h-9 w-36 rounded-lg text-white border-white border hover:bg-white hover:text-[#01365A]">Register</button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class=" h-screen w-3/5">
+            <img src="/assets/Images/undraw_medicine_b1ol (1).png" alt="" class="m-auto mt-20 h-2/3 w-2/3">
+        </div>
+    </div>
+
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script type="text/javascript">
+
+        const baseURL = "http://localhost:8080"
+        sessionStorage.removeItem("id_user")
+
+        document.getElementById("btn_login").onclick = function () {
+            user_login()
+        };
+        
+        document.getElementById("btn_register").onclick = function () {
+            location.href = "/public/register.html";
+        };
+
+        function user_login(){
+            const data = {}
+            data.username = document.getElementById("username").value
+            data.password = document.getElementById("password").value
+
+            $.ajax({
+                type: "POST",
+                url: baseURL + "/loginUser",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "json"
+            }).done(function (data) {
+                // console.log(data);
+                if (data) {
+                    if (data.length === 0) {
+                        alert("username atau password salah!!")
+
+                    } else {
+                        alert("berhasil login")
+                        console.log("berhasil: ", data)
+
+                        sessionStorage.setItem("id_user", data[0].id_user)
+                        sessionStorage.setItem("username", data[0].username)
+                        sessionStorage.setItem("password", data[0].password)
+                        sessionStorage.setItem("email", data[0].email)
+                        sessionStorage.setItem("role", data[0].role)
+                        sessionStorage.setItem("nama", data[0].nama)
+                        sessionStorage.setItem("usia", data[0].usia)
+                        sessionStorage.setItem("tgl_lahir", data[0].tgl_lahir)
+                        sessionStorage.setItem("alamat", data[0].alamat)
+                        sessionStorage.setItem("kota", data[0].kota)
+                        sessionStorage.setItem("no_kontak", data[0].no_kontak)
+                        
+                        // console.log(sessionStorage.getItem("id_user"));
+                        if(data[0].role === "Admin"){
+                            location.href = "/public/admin.html";
+                        }else{
+                            location.href = "/public/home.html";
+
+                        }
+                    }
+                    
+                } else {
+                    
+                    console.log("Login gagal: ", data.error);
+                }
+                
+            }).fail(function (response) {
+                alert('Error: ' + response)
+                console.log("gagal");
+            })
+        }
+
+    </script>
+</body>
+</html>

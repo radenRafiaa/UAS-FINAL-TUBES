@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  <link rel="icon" href="/assets/Images/pencil.png">
+
+  <!-- Ganti Dengan NIM Kalian -->
+  <title>Edit Profil</title>
+
+  <style type="text/css" media="screen">
+
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+
+    <!-- Back Button -->
+    <a href="profile.html"><img src="/assets/Images/back.png" class="img-fluid" alt="back-button"
+        style="width:50px; margin: 10px;"></a>
+
+    <!-- Foto Profil -->
+    <div class="row">
+      <div class="col-md-4 border-right">
+        <div class="d-flex flex-column align-items-center p-3 py-5">
+          <img class="rounded-circle" src="/assets/Images/profil.jpg" style="width: 250px; height: 250x;">
+          <span class="font-weight-bold" id="nama_user">Alexandra</span>
+          <span class="text-black-50" id="email_user">alexandra@example.com</span>
+        </div>
+      </div>
+
+      <!-- Form Edit Profil -->
+      <div class="col-md-8 border-right">
+        <div class="p-3 py-5">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="text-right">Edit Profil</h4>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6">
+              <label class="labels">Username</label>
+              <input type="text" class="form-control" placeholder="Your Username" value="" id="username_update">
+            </div>
+            <div class="col-md-6">
+              <label class="labels">Password</label>
+              <input type="password" class="form-control" value="" placeholder="Your Password" id="password_update">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <label class="labels">Nama</label>
+              <input type="text" class="form-control" placeholder="Your Name" value="" id="nama_update">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <label class="labels">Email</label>
+              <input type="text" class="form-control" placeholder="Your Email" value="" id="email_update">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <label class="labels">Alamat</label>
+              <input type="text" class="form-control" placeholder="Your Alamat" value="" id="alamat_update">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <label class="labels">Kota</label>
+              <input type="text" class="form-control" placeholder="Your Kota" value="" id="kota_update">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-12">
+              <label class="labels">No. Telepon</label>
+              <input type="text" class="form-control" placeholder="Your Nomor Telepon" value="" id="telpon_update">
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-md-6">
+              <label class="labels">Tanggal Lahir</label>
+              <input type="date" class="form-control" placeholder="Your Tanggal Lahir" value="" id="lahir_update">
+            </div>
+            <div class="col-md-6">
+              <label class="labels">Usia</label>
+              <input type="number" class="form-control" placeholder="Your Usia" value="" id="usia_update">
+            </div>
+          </div>
+          <div class="mt-5 text-center">
+            <button type="saveprofile" class="btn btn-dark profile-button" onclick="button_update()">Simpan
+              Profil</button>
+          </div>
+          <div class="mt-2 text-center">
+            <button type="deleteprofile" class="btn btn-danger profile-button" onclick="button_delete()">Hapus
+              Profil</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+  <script src="../assets/js/jquery.min.js"></script>
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    const baseURL = "http://localhost:8080"
+
+    document.getElementById("username_update").value = sessionStorage.getItem("username")
+    // document.getElementById("password_update").value = sessionStorage.getItem("password")
+    document.getElementById("email_update").value = sessionStorage.getItem("email")
+    document.getElementById("nama_update").value = sessionStorage.getItem("nama")
+    document.getElementById("alamat_update").value = sessionStorage.getItem("alamat")
+    document.getElementById("kota_update").value = sessionStorage.getItem("kota")
+    document.getElementById("telpon_update").value = sessionStorage.getItem("no_kontak")
+    document.getElementById("lahir_update").value = sessionStorage.getItem("tgl_lahir")
+    document.getElementById("usia_update").value = sessionStorage.getItem("usia")
+
+    document.getElementById("nama_user").innerHTML = sessionStorage.getItem("nama")
+    document.getElementById("email_user").innerHTML = sessionStorage.getItem("email")
+
+    function button_update() {
+      var id = sessionStorage.getItem("id_user")
+
+      const data = {}
+      data.username = document.getElementById("username_update").value
+      data.password = document.getElementById("password_update").value
+      data.nama = document.getElementById("nama_update").value
+      data.email = document.getElementById("email_update").value
+      data.alamat = document.getElementById("alamat_update").value
+      data.kota = document.getElementById("kota_update").value
+      data.no_kontak = document.getElementById("telpon_update").value
+      data.tgl_lahir = document.getElementById("lahir_update").value
+      data.usia = document.getElementById("usia_update").value
+
+      $.ajax({
+        type: "POST",
+        url: baseURL + "/updateUser/" + id,
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        dataType: "json"
+      }).done(function (response) {
+        alert("Update success!")
+        location.href = "/public/profile.html";
+      }).fail(function (response) {
+        alert('Error: ' + response.sqlMessage)
+      })
+
+      sessionStorage.setItem("username", data.username)
+      sessionStorage.setItem("password", data.password)
+      sessionStorage.setItem("email", data.email)
+      sessionStorage.setItem("nama", data.nama)
+      sessionStorage.setItem("usia", data.usia)
+      sessionStorage.setItem("tgl_lahir", data.tgl_lahir)
+      sessionStorage.setItem("alamat", data.alamat)
+      sessionStorage.setItem("kota", data.kota)
+      sessionStorage.setItem("no_kontak", data.no_kontak)
+    }
+
+    function button_delete() {
+      var id = sessionStorage.getItem("id_user")
+
+      $.ajax({
+        type: "POST",
+        url: baseURL + "/deleteUser/" + id,
+        contentType: "application/json",
+        dataType: "json"
+      }).done(function (response) {
+        alert("Delete success!")
+        location.href = "/public/index.html";
+      }).fail(function (response) {
+        alert('Error: ' + response.sqlMessage)
+      })
+    }
+
+
+
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://findicons.com/files/icons/2526/bloggers/256/admin.png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.css">
+    <title>Admin Informasi</title>
+    <style>
+        button {
+            border-radius: 10px;
+            margin: 5px;
+        }
+        .delete {
+            background-color: red;
+        } 
+        .delete:hover {
+            background-color: rgb(255, 116, 116);
+        }
+        .update {
+            background-color: rgb(98, 98, 255);
+        } 
+        .update:hover {
+            background-color: rgb(156, 156, 255);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">
+          <img src="https://findicons.com/files/icons/2526/bloggers/256/admin.png" alt="Profile picture" class="rounded-circle" width="30" height="30">
+          Admin
+        </a>
+        <button class="btn btn-danger" onclick="logout()">Logout</button>
+    </nav>
+
+    <table class='mt-4 table table-dark table-striped' id='data-table'>
+        <thead>
+            <tr>
+                <th>Judul</th><th>Sumber</th><th>Tgl Pembuatan</th><th>Isi</th><th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="isi"></tbody>
+    </table>
+
+    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+    <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        const baseURL = "http://localhost:8080"
+        function tabel_informasi() {
+
+            $.getJSON(baseURL + "/getInformasi", (data) => {
+                console.log(data)
+                data.forEach(function (value) {
+                    $("<tr>")
+                        .append(`<td>${value.judul}</td>`)
+                        .append(`<td>${value.source}</td>`)
+                        .append(`<td>${value.tgl_pembuatan}</td>`)
+                        .append(`<td>${value.isi}</td>`)
+                        .append(`<td><button class="delete" data-id="${value.id}">Delete</button><button class="update" data-id="${value.id}">Update</button></td>`)
+                        .appendTo("#data-table");
+                })
+
+                $('#data-table').DataTable();
+
+                $('#data-table tbody').on('click', 'button.delete', function () {
+                    var id = $(this).data('id');
+                    // perform delete operation using the id
+                    // console.log('id : ', id)
+                    // $.ajax({
+                    //     type: "POST",
+                    //     url: baseURL + "/deleteInformasi/" + id,
+                    //     contentType: "application/json",
+                    //     dataType: "json"
+                    // }).done(function (response) {
+                    //     alert("Delete success!")
+                    //     location.reload();
+                    // }).fail(function (response) {
+                    //     alert('Error: ' + response.sqlMessage)
+                    // })
+                    // deleteRow(id);
+                    // location.reload();
+                    $.ajax({
+                        url: baseURL + "/deleteInformasi/" + id,
+                        type: 'POST',
+                        data: { _method: 'DELETE' },
+                        success: function(response) {
+                            alert("Delete success!")
+                            location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle the error case
+                            console.log(error);
+                        }
+                    });
+                });
+
+                $('#data-table tbody').on('click', 'button.update', function () {
+                    var id = $(this).data('id');
+                    // perform update operation using the id
+                });
+
+            })
+        }
+
+        window.onload = tabel_informasi;
+
+        function logout() {
+            location.href = "/public/index.html";
+        }
+        
+    </script>
+</body>
+</html>

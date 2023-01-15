@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register User</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="absolute pl-5 pt-5">
+        <img src="/assets/Images/logoHeader.png" alt="" class="h-2/3 w-2/3 ">
+    </div>
+
+    <div class="flex w-screen items-center">
+        <div class="bg-[#01365A] h-11 w-2/5">
+            <div class="pt-20">
+                <p class="text-white text-xl font-bold ml-20">ISI DATA KAMU</p>
+                <div class="flex flex-col items-center">
+                    <input id="username" type="text" class="w-3/4 rounded-full p-1 pl-5 pr-5 mt-5" placeholder="Username">
+                    <input id="password" type="password" class="w-3/4 rounded-full p-1 pl-5 pr-5 mt-5" placeholder="Password">
+                    <input id="email" type="email" class="w-3/4 rounded-full p-1 pl-5 pr-5 mt-5" placeholder="Email">
+                    <input id="nama" type="text" class="w-3/4 rounded-full p-1 pl-5 pr-5 mt-5" placeholder="Nama">
+                    <input id="usia" type="number" class="w-3/4 rounded-full p-1 pl-5 pr-5 mt-5" placeholder="Usia">
+                </div>
+
+                <p class="text-white mt-3 ml-20">Tanggal Lahir</p>
+                <div class="flex flex-col items-center">
+                    <input id="tgl_lahir" type="date" class="w-3/4 rounded-full p-1 pl-5 pr-5 mt-2">
+                    <input id="alamat" type="text" class="w-3/4 rounded-full p-1 pl-5 pr-5 mt-5" placeholder="Alamat">
+                    <input id="kota" type="text" class="w-3/4 rounded-full p-1 pl-5 pr-5 mt-5" placeholder="Kota">
+                    <input id="kontak" type="text" class="w-3/4 rounded-full p-1 pl-5 pr-5 mt-5" placeholder="No Tlp">
+                </div>
+
+                <div class="flex flex-col justify-start items-start ml-16">
+                    <p class="text-white mt-3 ml-3">Sebagai</p>
+                    <div class="flex flex-col ml-3">
+                        <div class="flex">
+                            <input type="radio" name="role" id="pasien" value="Pasien">
+                            <label for="pasien" class="text-white ml-3">Pasien</label>
+                        </div>
+                        <div class="flex">
+                            <input type="radio" name="role" id="psikolog" value="Psikolog">
+                            <label for="psikolog" class="text-white ml-3">Psikolog</label>
+                        </div>
+                        <div class="flex">
+                            <input type="radio" name="role" id="psikiater" value="Psikiater">
+                            <label for="psikiater" class="text-white ml-3">Psikiater</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-center items-center mt-3">
+                    <button id="btn_submit" class="bg-white h-9 w-36 rounded-lg text-[#01365A] hover:bg-[#01365A] hover:text-white hover:border" onclick="register_user()">Submit</button>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="h-screen w-3/5">
+            <img src="/assets/Images/undraw_medicine_b1ol (1).png" alt="" class="m-auto mt-20 h-2/3 w-2/3">
+        </div>
+    </div>
+
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script type="text/javascript">
+
+        const baseURL = "http://localhost:8080"
+
+        // document.getElementById("btn_submit").onclick = function () {
+        //     // register_user()
+        //     location.href = "/public/index.html";
+        // };
+
+        function register_user() {
+            const data = {}
+            data.username = document.getElementById("username").value
+            data.password = document.getElementById("password").value
+            data.nama = document.getElementById("nama").value
+            data.email = document.getElementById("email").value
+            data.usia = document.getElementById("usia").value
+            data.tgl_lahir = document.getElementById("tgl_lahir").value
+            data.alamat = document.getElementById("alamat").value
+            data.kota = document.getElementById("kota").value
+            data.no_kontak = document.getElementById("kontak").value
+            data.role = document.querySelector('input[name = "role"]:checked').value
+            //data.role = $('input[name=role]:checked').val()
+            // console.log(data.username);
+            // console.log(data.password);
+            // console.log(data.email);
+            // console.log(data.usia);
+            // console.log(data.tgl_lahir);
+            // console.log(data.alamat);
+            // console.log(data.kota);
+            // console.log(data.no_kontak);
+            // console.log(data.role);
+            $.ajax({
+                type: "POST",
+                url: baseURL + "/registerUser",
+                data: JSON.stringify(data),
+                contentType: "application/json",
+                dataType: "json"
+
+            }).done(function (response) {
+                alert("berhasil register")
+                console.log("berhasil: ", response);
+
+                
+                location.href = "/public/index.html";
+            }).fail(function (response) {
+                alert('Error: ' + response)
+                console.log("gagal");
+            })
+        }
+    </script>
+</body>
+</html>
